@@ -25,18 +25,18 @@ import urllib.error
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 MODEL = os.environ.get("VERA_MODEL", "gemini-flash-lite-latest")
 API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
-TIMEOUT_SECONDS = float(os.environ.get("VERA_LLM_TIMEOUT", "5"))
+TIMEOUT_SECONDS = float(os.environ.get("VERA_LLM_TIMEOUT", "10"))
  
 # Free-tier Gemini models cap out around 10-15 requests/minute. Space our own
 # calls out so we don't self-inflict 429s during a tick batch (which can fire
 # several compose() calls back-to-back). Override via env if you're on a
 # paid/higher-quota key.
-MIN_CALL_INTERVAL_SECONDS = float(os.environ.get("VERA_LLM_MIN_INTERVAL", "0.3")) 
-MAX_RETRIES = int(os.environ.get("VERA_LLM_MAX_RETRIES", "1"))
+MIN_CALL_INTERVAL_SECONDS = float(os.environ.get("VERA_LLM_MIN_INTERVAL", "4.5")) 
+MAX_RETRIES = int(os.environ.get("VERA_LLM_MAX_RETRIES", "3"))
 # Hard ceiling on total wall-clock time complete_json() may spend (throttle +
 # request + retries combined), kept comfortably under the judge's 30s
 # per-call budget so a string of 429s can never cause an operational timeout.
-TOTAL_BUDGET_SECONDS = float(os.environ.get("VERA_LLM_TOTAL_BUDGET", "6"))
+TOTAL_BUDGET_SECONDS = float(os.environ.get("VERA_LLM_TOTAL_BUDGET", "22"))
  
 _last_call_lock = threading.Lock()
 _last_call_ts = 0.0
